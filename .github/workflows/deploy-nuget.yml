@@ -9,7 +9,7 @@ jobs:
   build-and-push:
     env:
       MAJOR_BUILD_NUMBER: 1
-      BUILD_NUMBER: ${{ env.MAJOR_BUILD_NUMBER }}.${{ github.run_number }}.${{ github.run_id }}
+      BUILD_NUMBER: $MAJOR_BUILD_NUMBER.${{ github.run_number }}.${{ github.run_id }}
       BUILD_CONFIGURATION: Release
       DOTNET_RUNTIME: win-x64
       USER: ${{ github.actor }}
