@@ -6,9 +6,10 @@ defaults:
   run:
     working-directory: ./TestClassLib
 jobs:
-  build-and-push-image:
+  build-and-push:
     env:
-      BUILD_NUMBER: ${{ github.run_id }}.${{ github.run_number }}
+      MAJOR_BUILD_NUMBER: 1
+      BUILD_NUMBER: ${{ env.MAJOR_BUILD_NUMBER }}.${{ github.run_number }}.${{ github.run_id }}
       BUILD_CONFIGURATION: Release
       DOTNET_RUNTIME: win-x64
       USER: ${{ github.actor }}
@@ -51,7 +52,6 @@ jobs:
     #         --runtime ${{ env.DOTNET_RUNTIME }} `
     #         --no-build `
     #         --configuration ${{ env.BUILD_CONFIGURATION }} `
-    #         --verbosity normal `
     #         $PROJECTS_TO_TEST
     #     }
     - name: .NET Pack
