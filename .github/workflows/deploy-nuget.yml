@@ -28,6 +28,7 @@ jobs:
       run: |
         Write-Host "Present Working Directory '$PWD'"
         Write-Host "Build Number '$BUILD_NUMBER'"
+        Write-Host "Build Config '$BUILD_CONFIGURATION'"
     - name: .NET Restore
       run: |
         dotnet restore `
@@ -35,11 +36,7 @@ jobs:
           $PROJECTS_TO_BUILD
     - name: .NET Build
       run: |
-        dotnet build `
-          --runtime win-x64 `
-          --configuration $BUILD_CONFIGURATION `
-          --no-restore `
-          $PROJECTS_TO_BUILD
+        dotnet build --no-restore --configuration $BUILD_CONFIGURATION --runtime win-x64  $PROJECTS_TO_BUILD
     #      /p:AssemblyVersion=$BUILD_NUMBER `
     # - name: .NET Test
     #   run: |
