@@ -37,8 +37,8 @@ jobs:
       run: |
         dotnet build `
           --runtime win-x64 `
-          --no-restore `
           --configuration $BUILD_CONFIGURATION `
+          --no-restore `
           $PROJECTS_TO_BUILD
     #      /p:AssemblyVersion=$BUILD_NUMBER `
     # - name: .NET Test
@@ -54,8 +54,8 @@ jobs:
     - name: .NET Pack
       run: |
         dotnet pack `
-          --runtime win-x64 `
           --configuration $BUILD_CONFIGURATION `
+          --runtime win-x64 `
           $PROJECTS_TO_BUILD
     - name: .NET Nuget Push
       run: |
