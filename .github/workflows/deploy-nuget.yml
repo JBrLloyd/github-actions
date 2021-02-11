@@ -1,0 +1,27 @@
+name: Create and publish a package
+on:
+  push:
+    branches: ['release']
+jobs:
+  build-and-push-image:
+    env:
+      BUILD_NUMBER: ${{ github.run_id }}.${{ github.run_number }}
+      USER: ${{ github.actor }}
+      NUGET_ARTIFACT_FEED_URL: https://nuget.pkg.github.com/jbrlloyd/index.json
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 5.0.x
+    - name: Restore dependencies
+      run: dotnet restore --runtime win-x64
+    - name: Build
+      run: dotnet build --runtime win-x64 --no-restore /p:AssemblyVersion=${{ BUILD_NUMBER }}
+    - name: Test
+      run: dotnet test --runtime win-x64 --no-build --verbosity normal
+    - name: Pack
+      run: dotnet pack --runtime win-x64
+    - name: Push
+      run: dotnet push ${{ github.repository }}.${{ BUILD_NUMBER }}.nupkg --api-key ${{ secrets.GITHUB_TOKEN }} --source ${{ NUGET_ARTIFACT_FEED_URL }}
