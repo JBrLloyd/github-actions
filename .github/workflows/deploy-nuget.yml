@@ -29,29 +29,33 @@ jobs:
       run: Write-Host "Present Working Directory '$PWD'"
     - name: .NET Restore
       run: |
-        dotnet restore $PROJECTS_TO_BUILD `
-          --runtime win-x64
+        dotnet restore `
+          --runtime win-x64 `
+          $PROJECTS_TO_BUILD
     - name: .NET Build
       run: |
-        dotnet build $PROJECTS_TO_BUILD `
+        dotnet build `
           --runtime win-x64 `
           --no-restore `
           --configuration $BUILD_CONFIGURATION `
-          /p:AssemblyVersion=$BUILD_NUMBER
+          /p:AssemblyVersion=$BUILD_NUMBER `
+          $PROJECTS_TO_BUILD
     # - name: .NET Test
     #   run: |
     #     Get-ChildItem ".\test\" -recurse -include "*.csproj" | % {
-    #       dotnet test $PROJECTS_TO_TEST `
+    #       dotnet test `
     #         --runtime win-x64 `
     #         --no-build `
     #         --configuration $BUILD_CONFIGURATION `
-    #         --verbosity normal
+    #         --verbosity normal `
+    #         $PROJECTS_TO_TEST
     #     }
     - name: .NET Pack
       run: |
         dotnet pack `
           --runtime win-x64 `
-          --configuration $BUILD_CONFIGURATION
+          --configuration $BUILD_CONFIGURATION `
+          $PROJECTS_TO_BUILD
     - name: .NET Nuget Push
       run: |
         dotnet nuget push ${{ github.repository }}.$BUILD_NUMBER.nupkg `
