@@ -59,13 +59,13 @@ jobs:
     - name: .NET Pack
       run: |
         dotnet pack `
-          /p:PackageVersion ${{ env.MAJOR_VER }}.${{ env.MINOR_VER }}.${{ env.BUILD_VER }} `
+          ${{ env.PROJECTS_TO_BUILD }}
           --configuration ${{ env.BUILD_CONFIGURATION }} `
           --runtime ${{ env.DOTNET_RUNTIME }} `
-          --output ${{ env.GITHUB_WORKSPACE }}/out `
-          ${{ env.PROJECTS_TO_BUILD }}
+          --output out `
+          -p:VersionPrefix ${{ env.MAJOR_VER }}.${{ env.MINOR_VER }}.${{ env.BUILD_VER }} `
     - name: .NET Nuget Push
       run: |
         dotnet nuget push `
-          ${{ env.GITHUB_WORKSPACE }}/out/*.${{ env.MAJOR_VER }}.${{ env.MINOR_VER }}.${{ env.BUILD_VER }}.nupkg `
+          out/*.${{ env.MAJOR_VER }}.${{ env.MINOR_VER }}.${{ env.BUILD_VER }}.nupkg `
           --source ${{ env.NUGET_ARTIFACT_FEED_URL }}
