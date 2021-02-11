@@ -25,6 +25,7 @@ jobs:
         source-url: $NUGET_ARTIFACT_FEED_URL
       env:
         NUGET_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - run: Write-Host "$PWD"
     - name: Restore dependencies
       run: |
         dotnet restore $PROJECTS_TO_BUILD \
@@ -38,11 +39,13 @@ jobs:
           /p:AssemblyVersion=$BUILD_NUMBER
     # - name: Test
     #   run: |
-    #     dotnet test $PROJECTS_TO_TEST \
-    #       --runtime win-x64 \
-    #       --no-build \
-    #       --configuration $BUILD_CONFIGURATION \
-    #       --verbosity normal
+    #     Get-ChildItem ".\test\" -recurse -include "*.csproj" | % {
+    #       dotnet test $PROJECTS_TO_TEST \
+    #         --runtime win-x64 \
+    #         --no-build \
+    #         --configuration $BUILD_CONFIGURATION \
+    #         --verbosity normal
+    #     }
     - name: Pack
       run: |
         dotnet pack \
