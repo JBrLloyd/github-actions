@@ -27,8 +27,9 @@ jobs:
     - name: Output
       run: |
         Write-Host "Present Working Directory '$PWD'"
-        Write-Host "Build Number '$BUILD_NUMBER'"
-        Write-Host "Build Config '$BUILD_CONFIGURATION'"
+        Write-Host "Build Number '${{ env.BUILD_NUMBER }}'"
+        Write-Host "Build Config '${{ env.BUILD_CONFIGURATION }}'"
+        Write-Host "Build Projects '${{ env.PROJECTS_TO_BUILD }}'"
     - name: .NET Restore
       run: |
         dotnet restore `
@@ -36,7 +37,7 @@ jobs:
           $PROJECTS_TO_BUILD
     - name: .NET Build
       run: |
-        dotnet build --no-restore --configuration $BUILD_CONFIGURATION --runtime win-x64 --verbosity detailed $PROJECTS_TO_BUILD
+        dotnet build --no-restore --configuration ${{ env.BUILD_CONFIGURATION }} --runtime win-x64 --verbosity detailed $PROJECTS_TO_BUILD
     #      /p:AssemblyVersion=$BUILD_NUMBER `
     # - name: .NET Test
     #   run: |
@@ -44,14 +45,14 @@ jobs:
     #       dotnet test `
     #         --runtime win-x64 `
     #         --no-build `
-    #         --configuration $BUILD_CONFIGURATION `
+    #         --configuration ${{ env.BUILD_CONFIGURATION }} `
     #         --verbosity normal `
     #         $PROJECTS_TO_TEST
     #     }
     - name: .NET Pack
       run: |
         dotnet pack `
-          --configuration $BUILD_CONFIGURATION `
+          --configuration ${{ env.BUILD_CONFIGURATION }} `
           --runtime win-x64 `
           $PROJECTS_TO_BUILD
     - name: .NET Nuget Push
