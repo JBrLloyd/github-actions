@@ -10,7 +10,7 @@ jobs:
     env:
       MAJOR_VER: 1
       MINOR_VER: 0
-      BUILD_REVISION_VER: ${{ github.run_number }}.${{ github.run_id }}
+      BUILD_VER: ${{ github.run_number }}
       BUILD_CONFIGURATION: Release
       DOTNET_RUNTIME: win-x64
       USER: ${{ github.actor }}
@@ -30,7 +30,7 @@ jobs:
     - name: Output
       run: |
         Write-Host "Present Working Directory '$PWD'"
-        Write-Host "Build Number '${{ env.MAJOR_VER }}.${{ env.MINOR_VER }}.${{ env.BUILD_REVISION_VER }}'"
+        Write-Host "Build Number '${{ env.MAJOR_VER }}.${{ env.MINOR_VER }}.${{ env.BUILD_VER }}'"
         Write-Host "Build Config '${{ env.BUILD_CONFIGURATION }}'"
         Write-Host "Build Projects '${{ env.PROJECTS_TO_BUILD }}'"
     - name: .NET Restore
@@ -44,7 +44,7 @@ jobs:
           --no-restore `
           --runtime ${{ env.DOTNET_RUNTIME }} `
           --configuration ${{ env.BUILD_CONFIGURATION }} `
-          /p:AssemblyVersion=${{ env.MAJOR_VER }}.${{ env.MINOR_VER }}.${{ env.BUILD_REVISION_VER }} `
+          /p:AssemblyVersion=${{ env.MAJOR_VER }}.${{ env.MINOR_VER }}.${{ env.BUILD_VER }} `
           ${{ env.PROJECTS_TO_BUILD }}
     # - name: .NET Test
     #   run: |
@@ -63,5 +63,5 @@ jobs:
           ${{ env.PROJECTS_TO_BUILD }}
     - name: .NET Nuget Push
       run: |
-        dotnet nuget push ${{ github.repository }}.${{ env.MAJOR_VER }}.${{ env.MINOR_VER }}.${{ env.BUILD_REVISION_VER }}.nupkg `
+        dotnet nuget push ${{ github.repository }}.${{ env.MAJOR_VER }}.${{ env.MINOR_VER }}.${{ env.BUILD_VER }}.nupkg `
           --source ${{ env.NUGET_ARTIFACT_FEED_URL }}
