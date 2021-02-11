@@ -10,6 +10,7 @@ jobs:
     env:
       BUILD_NUMBER: ${{ github.run_id }}.${{ github.run_number }}
       BUILD_CONFIGURATION: Release
+      DOTNET_RUNTIME: win-x64
       USER: ${{ github.actor }}
       NUGET_ARTIFACT_FEED_URL: https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json
       NUGET_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -33,17 +34,21 @@ jobs:
     - name: .NET Restore
       run: |
         dotnet restore `
-          --runtime win-x64 `
-          $PROJECTS_TO_BUILD
+          --runtime ${{ env.DOTNET_RUNTIME }} `
+          ${{ env.PROJECTS_TO_BUILD }}
     - name: .NET Build
       run: |
-        dotnet build --no-restore --configuration ${{ env.BUILD_CONFIGURATION }} --runtime win-x64 --verbosity detailed $PROJECTS_TO_BUILD
-    #      /p:AssemblyVersion=$BUILD_NUMBER `
+        dotnet build `
+          --no-restore `
+          --runtime ${{ env.DOTNET_RUNTIME }} `
+          --configuration ${{ env.BUILD_CONFIGURATION }} `
+          /p:AssemblyVersion=${{ env.BUILD_NUMBER }} `
+          ${{ env.PROJECTS_TO_BUILD }}
     # - name: .NET Test
     #   run: |
     #     Get-ChildItem ".\test\" -recurse -include "*.csproj" | % {
     #       dotnet test `
-    #         --runtime win-x64 `
+    #         --runtime ${{ env.DOTNET_RUNTIME }} `
     #         --no-build `
     #         --configuration ${{ env.BUILD_CONFIGURATION }} `
     #         --verbosity normal `
@@ -53,9 +58,9 @@ jobs:
       run: |
         dotnet pack `
           --configuration ${{ env.BUILD_CONFIGURATION }} `
-          --runtime win-x64 `
-          $PROJECTS_TO_BUILD
+          --runtime ${{ env.DOTNET_RUNTIME }} `
+          ${{ env.PROJECTS_TO_BUILD }}
     - name: .NET Nuget Push
       run: |
-        dotnet nuget push ${{ github.repository }}.$BUILD_NUMBER.nupkg `
-          --source $NUGET_ARTIFACT_FEED_URL
+        dotnet nuget push ${{ github.repository }}.${{ env.BUILD_NUMBER }}.nupkg `
+          --source ${{ env.NUGET_ARTIFACT_FEED_URL }}
