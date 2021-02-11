@@ -36,7 +36,7 @@ jobs:
           $PROJECTS_TO_BUILD
     - name: .NET Build
       run: |
-        dotnet build --no-restore --configuration $BUILD_CONFIGURATION --runtime win-x64  $PROJECTS_TO_BUILD
+        dotnet build --no-restore --configuration $BUILD_CONFIGURATION --runtime win-x64 --verbosity detailed $PROJECTS_TO_BUILD
     #      /p:AssemblyVersion=$BUILD_NUMBER `
     # - name: .NET Test
     #   run: |
