@@ -59,11 +59,11 @@ jobs:
     - name: .NET Pack
       run: |
         dotnet pack `
-          ${{ env.PROJECTS_TO_BUILD }} `
           --configuration ${{ env.BUILD_CONFIGURATION }} `
           --runtime ${{ env.DOTNET_RUNTIME }} `
           --output out `
-          -p:VersionPrefix ${{ env.MAJOR_VER }}.${{ env.MINOR_VER }}.${{ env.BUILD_VER }}
+          -p:VersionPrefix=${{ env.MAJOR_VER }}.${{ env.MINOR_VER }}.${{ env.BUILD_VER }} `
+          ${{ env.PROJECTS_TO_BUILD }}
     - name: .NET Nuget Push
       run: |
         dotnet nuget push `
