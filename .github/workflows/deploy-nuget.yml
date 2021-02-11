@@ -12,7 +12,7 @@ jobs:
       BUILD_CONFIGURATION: Release
       USER: ${{ github.actor }}
       NUGET_ARTIFACT_FEED_URL: https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json
-      PROJECTS_TO_BUILD: 'TestClassLib/TestClassLib.csproj'
+      PROJECTS_TO_BUILD: 'TestClassLib.csproj'
       PROJECTS_TO_TEST: '**/*.Tests.csproj'
     runs-on: windows-latest
     steps:
@@ -25,19 +25,20 @@ jobs:
         source-url: $NUGET_ARTIFACT_FEED_URL
       env:
         NUGET_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    - run: Write-Host "$PWD"
-    - name: Restore dependencies
+    - name: Output
+      run: Write-Host "Present Working Directory '$PWD'"
+    - name: .NET Restore
       run: |
         dotnet restore $PROJECTS_TO_BUILD \
           --runtime win-x64
-    - name: Build
+    - name: .NET Build
       run: |
         dotnet build $PROJECTS_TO_BUILD \
           --runtime win-x64 \
           --no-restore \
           --configuration $BUILD_CONFIGURATION \
           /p:AssemblyVersion=$BUILD_NUMBER
-    # - name: Test
+    # - name: .NET Test
     #   run: |
     #     Get-ChildItem ".\test\" -recurse -include "*.csproj" | % {
     #       dotnet test $PROJECTS_TO_TEST \
@@ -46,12 +47,12 @@ jobs:
     #         --configuration $BUILD_CONFIGURATION \
     #         --verbosity normal
     #     }
-    - name: Pack
+    - name: .NET Pack
       run: |
         dotnet pack \
           --runtime win-x64 \
           --configuration $BUILD_CONFIGURATION
-    - name: Push
+    - name: .NET Nuget Push
       run: |
         dotnet nuget push ${{ github.repository }}.$BUILD_NUMBER.nupkg \
           --source $NUGET_ARTIFACT_FEED_URL
