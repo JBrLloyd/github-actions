@@ -24,4 +24,4 @@ jobs:
     - name: Pack
       run: dotnet pack --runtime win-x64
     - name: Push
-      run: dotnet push ${{ github.repository }}.$BUILD_NUMBER.nupkg --api-key ${{ secrets.GITHUB_TOKEN }} --source ${{ NUGET_ARTIFACT_FEED_URL }}
+      run: dotnet push ${{ github.repository }}.$BUILD_NUMBER.nupkg --api-key ${{ secrets.GITHUB_TOKEN }} --source $NUGET_ARTIFACT_FEED_URL
