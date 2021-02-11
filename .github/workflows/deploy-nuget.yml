@@ -44,8 +44,8 @@ jobs:
           --no-restore `
           --runtime ${{ env.DOTNET_RUNTIME }} `
           --configuration ${{ env.BUILD_CONFIGURATION }} `
-          -p:AssemblyVersion=${{ env.MAJOR_VER }}.${{ env.MINOR_VER }}.${{ env.BUILD_VER }} `
-          -p:Version=${{ env.MAJOR_VER }}.${{ env.MINOR_VER }}.${{ env.BUILD_VER }} `
+          /p:AssemblyVersion=${{ env.MAJOR_VER }}.${{ env.MINOR_VER }}.${{ env.BUILD_VER }} `
+          /p:Version=${{ env.MAJOR_VER }}.${{ env.MINOR_VER }}.${{ env.BUILD_VER }} `
           ${{ env.PROJECTS_TO_BUILD }}
     # - name: .NET Test
     #   run: |
@@ -59,7 +59,7 @@ jobs:
     - name: .NET Pack
       run: |
         dotnet pack `
-          -p:PackageVersion ${{ env.MAJOR_VER }}.${{ env.MINOR_VER }}.${{ env.BUILD_VER }} `
+          /p:PackageVersion ${{ env.MAJOR_VER }}.${{ env.MINOR_VER }}.${{ env.BUILD_VER }} `
           --configuration ${{ env.BUILD_CONFIGURATION }} `
           --runtime ${{ env.DOTNET_RUNTIME }} `
           --output ${{ env.GITHUB_WORKSPACE }}/out `
