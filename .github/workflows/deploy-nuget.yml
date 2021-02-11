@@ -12,6 +12,7 @@ jobs:
       BUILD_CONFIGURATION: Release
       USER: ${{ github.actor }}
       NUGET_ARTIFACT_FEED_URL: https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json
+      NUGET_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       PROJECTS_TO_BUILD: 'TestClassLib.csproj'
       PROJECTS_TO_TEST: '**/*.Tests.csproj'
     runs-on: windows-latest
@@ -23,10 +24,10 @@ jobs:
       with:
         dotnet-version: '5.0.x'
         source-url: ${{ env.NUGET_ARTIFACT_FEED_URL }}
-      env:
-        NUGET_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     - name: Output
-      run: Write-Host "Present Working Directory '$PWD'"
+      run: |
+        Write-Host "Present Working Directory '$PWD'"
+        Write-Host "Build Number '$BUILD_NUMBER'"
     - name: .NET Restore
       run: |
         dotnet restore `
@@ -38,8 +39,8 @@ jobs:
           --runtime win-x64 `
           --no-restore `
           --configuration $BUILD_CONFIGURATION `
-          /p:AssemblyVersion=$BUILD_NUMBER `
           $PROJECTS_TO_BUILD
+    #      /p:AssemblyVersion=$BUILD_NUMBER `
     # - name: .NET Test
     #   run: |
     #     Get-ChildItem ".\test\" -recurse -include "*.csproj" | % {
