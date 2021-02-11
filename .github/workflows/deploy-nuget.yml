@@ -12,6 +12,8 @@ jobs:
       BUILD_CONFIGURATION: Release
       USER: ${{ github.actor }}
       NUGET_ARTIFACT_FEED_URL: https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json
+      PROJECTS_TO_BUILD: '**/TestClassLib.csproj'
+      PROJECTS_TO_TEST: '**/Tests.csproj'
     runs-on: windows-latest
     steps:
     - uses: actions/checkout@v2
@@ -24,16 +26,16 @@ jobs:
       env:
         NUGET_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     - name: Restore dependencies
-      run: dotnet restore \
+      run: dotnet restore $PROJECTS_TO_BUILD \
         --runtime win-x64
     - name: Build
-      run: dotnet build \
+      run: dotnet build $PROJECTS_TO_BUILD \
         --runtime win-x64 \
         --no-restore \
         --configuration $BUILD_CONFIGURATION \
         /p:AssemblyVersion=$BUILD_NUMBER
     - name: Test
-      run: dotnet test \
+      run: dotnet test $PROJECTS_TO_TEST \
         --runtime win-x64 \
         --no-build \
         --configuration $BUILD_CONFIGURATION \
