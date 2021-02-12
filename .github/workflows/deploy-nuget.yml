@@ -67,5 +67,5 @@ jobs:
     - name: .NET Nuget Push
       run: |
         dotnet nuget push `
-          out/*.${{ env.MAJOR_VER }}.${{ env.MINOR_VER }}.${{ env.BUILD_VER }}.nupkg `
+          **/out/*.${{ env.MAJOR_VER }}.${{ env.MINOR_VER }}.${{ env.BUILD_VER }}.nupkg `
           --source ${{ env.NUGET_ARTIFACT_FEED_URL }}
