@@ -68,4 +68,5 @@ jobs:
       run: |
         dotnet nuget push `
           **/out/*.${{ env.MAJOR_VER }}.${{ env.MINOR_VER }}.${{ env.BUILD_VER }}.nupkg `
+          --api-key ${{ env.NUGET_AUTH_TOKEN }} `
           --source ${{ env.NUGET_ARTIFACT_FEED_URL }}
